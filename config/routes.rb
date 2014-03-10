@@ -1,4 +1,10 @@
 FtPoll::Application.routes.draw do
+  resources :post_entries
+
+
+  resources :authors
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

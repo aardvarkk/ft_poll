@@ -19,17 +19,41 @@ namespace :ft do
     # Remove all scripts
     page.root.xpath("//script").remove
 
-    # Find all posets
-    posts = page.root.xpath('.//td[regex(., "td_post_[\d]+")]', Class.new {
+    # Find all outer posts (get titles, etc.)
+    posts = page.root.xpath('.//div[regex(., "edit[\d]+")]', Class.new {
       def regex node_set, regex
         node_set.find_all { |node| node['id'] =~ /#{regex}/ }
       end
       }.new)
+    # p posts
+    authors = []
+    posts.search('.bigusername').each do |a|
+      authors << a.text
+    end
+    # p authors
 
-    # Write them to the screen
-    posts.each do |p| 
-      puts "=== POST ==="
-      puts p.text.squish
+    # Find all post content
+    msgs = posts.xpath('.//td[regex(., "td_post_[\d]+")]', Class.new {
+      def regex node_set, regex
+        node_set.find_all { |node| node['id'] =~ /#{regex}/ }
+      end
+      }.new)
+    # p msgs
+
+    throw [authors, msgs] if authors.length != msgs.length
+
+    # Create the posts based on the text
+    # If it's an edit, it will create a new post entry
+    msgs.each_with_index do |msg,i|
+
+      # Create an author if necessary
+      a = Author.where(name: authors[i]).first_or_create
+      p a
+
+      # Create the post
+      pe = PostEntry.where(author_id: a, content: msg.text.squish).first_or_create
+      p pe
+
     end
 
   end

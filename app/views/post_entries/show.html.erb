@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Author:</b>
+  <%= @post_entry.author_id %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @post_entry.content %>
+</p>
+
+
+<%= link_to 'Edit', edit_post_entry_path(@post_entry) %> |
+<%= link_to 'Back', post_entries_path %>

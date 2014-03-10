@@ -25,12 +25,14 @@ namespace :ft do
         node_set.find_all { |node| node['id'] =~ /#{regex}/ }
       end
       }.new)
-    # p posts
+    p posts
+
+    # Get all authors
     authors = []
     posts.search('.bigusername').each do |a|
       authors << a.text
     end
-    # p authors
+    p authors
 
     # Find all post content
     msgs = posts.xpath('.//td[regex(., "td_post_[\d]+")]', Class.new {
@@ -38,9 +40,18 @@ namespace :ft do
         node_set.find_all { |node| node['id'] =~ /#{regex}/ }
       end
       }.new)
-    # p msgs
+    p msgs
+
+    # Find all post ids
+    post_ids = posts.xpath('.//a[regex(., "postcount[\d]+")]', Class.new {
+      def regex node_set, regex
+        node_set.find_all { |node| node['id'] =~ /#{regex}/ }
+      end
+      }.new)
+    p post_ids
 
     throw [authors, msgs] if authors.length != msgs.length
+    throw [msgs, post_ids] if msgs.length != post_ids.length
 
     # Create the posts based on the text
     # If it's an edit, it will create a new post entry
@@ -51,7 +62,11 @@ namespace :ft do
       p a
 
       # Create the post
-      pe = PostEntry.where(author_id: a, content: msg.text.squish).first_or_create
+      pe = PostEntry.where(
+        author_id: a, 
+        post_id: post_ids[i].text.to_i,
+        content: msg.text.squish
+        ).first_or_create
       p pe
 
     end

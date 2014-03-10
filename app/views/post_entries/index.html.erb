@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th>Post ID</th>
     <th>Author</th>
     <th>Content</th>
     <th></th>
@@ -11,7 +12,8 @@
 
 <% @post_entries.each do |post_entry| %>
   <tr>
-    <td><%= post_entry.author_id %></td>
+    <td><%= post_entry.post_id %></td>
+    <td><%= post_entry.author.name %></td>
     <td><%= post_entry.content %></td>
     <td><%= link_to 'Show', post_entry %></td>
     <td><%= link_to 'Edit', edit_post_entry_path(post_entry) %></td>

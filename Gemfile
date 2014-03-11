@@ -31,6 +31,10 @@ gem 'jquery-rails'
 # Use unicorn as the app server
 # gem 'unicorn'
 
+group :production do
+  gem 'therubyracer' # JavaScript runtime
+end
+
 # Deploy with Capistrano
 group :development do
   gem 'capistrano', github: 'capistrano'

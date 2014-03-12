@@ -3,13 +3,23 @@
     <th>Post ID</th>
     <th>Author</th>
     <th>Content</th>
+    <th>Age</th>
   </thead>
   <tbody>
+    <% prv_post_id = nil %>
     <% @posts.each do |p| %>
       <tr>
         <td><%= p.post_id %></td>
-        <td><%= p.author.name %></td>
+        <td>
+          <%# Highlight edits with bold post ID %>
+          <% if prv_post_id.present? && p.post_id == prv_post_id %>
+            <em><%= p.author.name %></em>
+          <% else %>
+            <%= p.author.name %>
+          <% end %>
+        </td>
         <td><%= p.content %></td>
+        <td><%= time_ago_in_words p.updated_at %></td>
       </tr>
     <% end %>
   </tbody>

@@ -66,11 +66,16 @@ namespace :ft do
         a = Author.where(name: authors[i]).first_or_create
         p a
 
+        # Removed any "Last edited by..."
+        # Because this changes with times and dates and creates duplicates
+        text = msg.text.squish
+        text.gsub!(/ Last edited.+$/, '')
+
         # Create the post
         pe = PostEntry.where(
           author_id: a, 
           post_id: post_ids[i].text.to_i,
-          content: msg.text.squish
+          content: text
           ).first_or_create
         p pe
 

@@ -40,7 +40,7 @@ namespace :ft do
       # p authors
 
       # Find all post content
-      msgs = posts.xpath('.//td[regex(., "td_post_[\d]+")]', Class.new {
+      msgs = posts.xpath('.//div[regex(., "td_post_[\d]+")]', Class.new {
         def regex node_set, regex
           node_set.find_all { |node| node['id'] =~ /#{regex}/ }
         end
